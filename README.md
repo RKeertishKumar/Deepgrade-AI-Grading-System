@@ -23,6 +23,11 @@ When "Is the fault rectified?" responses no, it's supposed to go onto the next c
 
 Next, we try out the sample image in a ChatGPT o3-mini-high ![image](https://github.com/user-attachments/assets/26b3aac8-310d-4c4e-9157-a5008a7922ca) The data extraction phase does solve the error noticed in Gemini 2.0 Flash model. The model does a great data extraction phase. It passes my human validation of all conditional points and flow. It also gives a great response on the verification and validation front. ![image](https://github.com/user-attachments/assets/cacaad8b-acbd-41c5-bfe3-447873c1ade5)
 
+## Tested out on llama3.2-vision 11b model
+![image](https://github.com/user-attachments/assets/97b54322-66e3-4d96-8f84-aa8373e3cb50)
+
+The extraction worked well and held onto the reasoning aspect as well. We can proceed with chain of thought reasoning from this output. We can also validate the input + image prompt on the llama3.2vision 11b model as well. Then compare the improvements in a multimodel scenario.
+
 
 
 
