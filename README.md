@@ -21,7 +21,7 @@ As, mentioned the response created a unending cycle within the data extracted. I
 
 When "Is the fault rectified?" responses no, it's supposed to go onto the next conditional block being "Does the system receive many TC BPDUs?" but instead it goes back to the "Analyze packet characteristics and filter out attack packets" which in turn creates the loop. We can also attribute that the sample image itself has faults but the general consensus is the flowcharts are stated this way. We could use this as a data point to fine to models to not the irregularity which taking the image as an input. But, the alternative arguement could be that with a better logic based validation or verfication mechanism we could have avoided this mistake.
 
-Next, we try out the sample image in a ChatGPT o3-mini-high ![image](https://github.com/user-attachments/assets/26b3aac8-310d-4c4e-9157-a5008a7922ca). The data extraction phase does solve the error noticed in Gemini 2.0 Flash model. The model does a great data extraction phase. It passes the my human validation of all conditional points and flow. It also gives a great response on the verification and validation front. ![image](https://github.com/user-attachments/assets/cacaad8b-acbd-41c5-bfe3-447873c1ade5)
+Next, we try out the sample image in a ChatGPT o3-mini-high ![image](https://github.com/user-attachments/assets/26b3aac8-310d-4c4e-9157-a5008a7922ca) The data extraction phase does solve the error noticed in Gemini 2.0 Flash model. The model does a great data extraction phase. It passes my human validation of all conditional points and flow. It also gives a great response on the verification and validation front. ![image](https://github.com/user-attachments/assets/cacaad8b-acbd-41c5-bfe3-447873c1ade5)
 
 
 
