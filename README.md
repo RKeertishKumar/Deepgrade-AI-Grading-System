@@ -1,6 +1,19 @@
 # Deepgrade-AI-Grading-System
 An automated grading system tool that mitigates individual LLMs drawbacks with AI agent architecture and systems solutions
 
+## Architecture Diagram
+
+```mermaid
+flowchart LR
+    A[In] -->B[LLM Call 1]
+    B[LLM Call 1] -->|Output 1|C[Gate]
+    C[Gate] -->|Pass| D[LLM Call 2]
+    C[Gate] -->|Fail| B[LLM Call 1]
+    D[LLM Call 2] -->|Pass| E[LLM Call 3]
+```
+
+## Multi LLM Orchestration Tool Architecture Diagram
+
 ## Roadmap
 Here's a glimpse of what's on the horizon:
 | Feature                                   | Status          |
