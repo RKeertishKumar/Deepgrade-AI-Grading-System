@@ -7,20 +7,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>FlowChart AI Analyzer</h1>
-        <div class="upload-box">
-            <input type="file" id="fileUpload" accept="image/*">
-            <label for="fileUpload">Upload your flowchart image</label>
+    <div class="main-container">
+        <div class="container">
+            <h1 class="neon-text">DeepGrade</h1>
+
+            <!-- Upload Box -->
+            <div class="upload-box">
+                <input type="file" id="fileUpload" accept="image/*">
+                <label for="fileUpload">Upload your flowchart image</label>
+            </div>
+
+            <!-- Image Preview Section -->
+            <div id="image-preview"></div>
+
+            <!-- Analyze Button -->
+            <button class="analyze-btn" onclick="analyzeFlowchart()">Analyze</button>
         </div>
-        <button class="analyze-btn" onclick="analyzeFlowchart()">Analyze</button>
+        
+        <!-- Analysis Summary -->
+        <div class="analysis-summary">
+            <h2 class="neon-text">Analysis Summary ✨</h2>
+            <p id="summary-content">Step-by-step breakdown of the flowchart will appear here...</p>
+        </div>
     </div>
 
-    <div class="analysis-summary" id="summary">
-        <h2>Analysis Summary ✨</h2>
-        <p id="summary-content">Step-by-step breakdown of the flowchart will appear here...</p>
-    </div>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

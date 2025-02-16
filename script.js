@@ -1,8 +1,12 @@
-function analyzeFlowchart() {
-    let summary = document.getElementById("summary-content");
-    summary.innerHTML = "Processing image... AI is analyzing the flowchart.";
-    
-    setTimeout(() => {
-        summary.innerHTML = "Analysis complete! Step-by-step breakdown of the flowchart appears here.";
-    }, 2000);
-}
+document.getElementById("fileUpload").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById("image-preview");
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Flowchart" class="preview-image">`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
