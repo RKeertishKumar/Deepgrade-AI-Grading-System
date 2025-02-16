@@ -1,7 +1,28 @@
 # Deepgrade-AI-Grading-System
 An automated grading system tool that mitigates individual LLMs drawbacks with AI agent architecture and systems solutions
 
-# Developer notes (Keertish)
+## Roadmap
+Here's a glimpse of what's on the horizon:
+| Feature                                   | Status          |
+|-------------------------------------------|-----------------|
+| **Website design**       | ✅ Completed    |
+| **Setup README.MD**           | ✅ Completed    |
+| **LLM**           | ✅ Completed    |
+| **Backend Integration**              |  📝 Planned   |
+| **Logic Gateway code - Graph Analysis**              |  🔄 In Progress  |
+| **FlowCE Evaluation Code**              |  📝 Planned   |
+| **Orchestration tool**              |  📝 Planned   |
+
+Status:
+✅ Completed
+📝 Planned
+🔄 In Progress
+
+# Design notes - UI/UX (Faizal)
+![image](https://github.com/user-attachments/assets/b02ddeeb-422b-4482-ad1c-99f3ea11a947)
+![image](https://github.com/user-attachments/assets/58cd8ff4-c391-4442-9474-4c7d78ce9b85)
+
+# Developer notes - LLMs Research (Keertish)
 
 ## Setup of ollama and test case
 Setup local multi model solution to test quality and responses of model. Downloaded the ![image](https://github.com/user-attachments/assets/228ff3c6-f958-4160-91dd-9758c811bd69) llama model with 7b. Now, selecting a image to test out the model. The image is taken from a bigger dataset that primary tested on reasoning of LLM model. This is the repo [FlowCV] (https://github.com/360AILAB-NLP/FlowCE). We took one image which is ![flowchart_test](https://github.com/user-attachments/assets/3387fa4c-da76-4f37-ac2b-7e357ceacc13)
@@ -35,6 +56,12 @@ Next, we try out the sample image in a ChatGPT o3-mini-high ![image](https://git
 
 The extraction worked well and held onto the reasoning aspect as well. We can proceed with chain of thought reasoning from this output. We can also validate the input + image prompt on the llama3.2vision 11b model as well. Then compare the improvements in a multi llm orchestration scenario.
 
+## Developer Notes - Frontend (Esha)
+Version 1:
+![image](https://github.com/user-attachments/assets/34813e0c-13e8-4a11-b3d7-565e911e10ab)
+
+Version 2:
+![image](https://github.com/user-attachments/assets/e7163923-a172-48de-8643-3f331b59651f)
 
 
 
