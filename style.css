@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #0d0d0d;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.upload-box {
+    border: 2px dashed #6c63ff;
+    padding: 20px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.upload-box label {
+    display: block;
+    cursor: pointer;
+    color: #6c63ff;
+}
+
+.analyze-btn {
+    background: #6c63ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.analysis-summary {
+    margin-top: 20px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    text-align: left;
+}

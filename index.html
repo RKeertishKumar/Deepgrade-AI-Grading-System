@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowChart AI Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>FlowChart AI Analyzer</h1>
+        <div class="upload-box">
+            <input type="file" id="fileUpload" accept="image/*">
+            <label for="fileUpload">Upload your flowchart image</label>
+        </div>
+        <button class="analyze-btn" onclick="analyzeFlowchart()">Analyze</button>
+    </div>
+
+    <div class="analysis-summary" id="summary">
+        <h2>Analysis Summary ✨</h2>
+        <p id="summary-content">Step-by-step breakdown of the flowchart will appear here...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
