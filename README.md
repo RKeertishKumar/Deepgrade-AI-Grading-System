@@ -45,10 +45,10 @@ Here's a glimpse of what's on the horizon:
 |-------------------------------------------|-----------------|
 | **Website design**       | ✅ Completed    |
 | **Setup README.MD**           | ✅ Completed    |
-| **LLM**           | ✅ Completed    |
+| **LLMs Research**           | ✅ Completed    |
 | **Backend Integration**              |  📝 Planned   |
 | **Logic Gateway code - Graph Analysis**              |  🔄 In Progress  |
-| **FlowCE Evaluation Code**              |  📝 Planned   |
+| **FlowCE Evaluation Code (Benchmarking mechanism)**              |  📝 Planned   |
 | **Orchestration tool**              |  📝 Planned   |
 
 Status:
