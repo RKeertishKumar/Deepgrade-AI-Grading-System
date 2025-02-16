@@ -11,8 +11,33 @@ flowchart LR
     C[Gate] -->|Fail| B[LLM Call 1]
     D[LLM Call 2] -->|Pass| E[LLM Call 3]
 ```
+### We use a logic gateway based verificaition of the output before moving along the prompt chaining approach.
 
 ## Multi LLM Orchestration Tool Architecture Diagram
+```mermaid
+flowchart LR
+    A[Input] -->B[Prompt Classification]
+    
+    subgraph Sematic Classifer
+    B[Prompt Classification:
+    Summerization
+    Logic Verification
+    Information Extration
+    Reasoning
+    Localization Recognition] -->|Prompt type|C[Input + Meta data]
+    end
+    C[Input + Meta data] -->D[Orchestration tool]
+    A[Input] -->|Prompt|C[Input + Meta data]
+    D[Orchestration tool] -->|Pass| E[Benchmarking tool]
+    E[Benchmarking tool] -->|Returns Evaluations| D[Orchestration tool]
+    D[Orchestration tool] -->|Output| F[LLM Call 1]
+    D[Orchestration tool] -->|Output| G[LLM Call 2]
+    D[Orchestration tool] -->|Output| H[...]
+    F --> J[Synthesizer]
+    G --> J[Synthesizer]
+    H --> J
+    J --> K[Output]
+```
 
 ## Roadmap
 Here's a glimpse of what's on the horizon:
