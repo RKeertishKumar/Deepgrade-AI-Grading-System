@@ -1,0 +1,130 @@
+/* Link to Google Fonts for League Spartan */
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600&display=swap');
+
+.common-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center elements vertically */
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  gap: 20px; /* Equal spacing between elements */
+}
+
+.head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+  margin-top: 0;
+}
+
+.head h1 {
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 600;
+  color: #f0f0f0;
+}
+
+.container {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  background-color: #080B23;
+  border: 2px solid #7054FF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(112, 84, 255, 0.5);
+  width: 624px;
+  height: 60%;
+  margin-top: 0;
+  overflow: hidden; /* Prevents content from overflowing */
+  position: relative;
+  flex-direction: column; /* Ensures elements stack properly */
+  padding: 20px;
+}
+
+.upload-icon {
+  width: 50px; 
+  height: 50px;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+button {
+  padding: 1em 2em;
+  background-color: #080B23;
+  border: none;
+  color: #f0f0f0;
+  border-radius: 10px;
+  font-family: 'League Spartan', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  background-image: linear-gradient(to bottom right, #008cff, #e100ff);
+  z-index: -1;
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+button:hover {
+  z-index: 0;
+  box-shadow: 40px 0 100px #008cff, -40px 0 100px #e100ff;
+}
+
+button:hover::after {
+  transform: scale(1.15);
+}
+
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between button and icon */
+}
+
+.uploaded-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Ensures the image maintains aspect ratio */
+    border-radius: 5px;
+    display: block;
+  }
+  
+  .image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Allows scrolling if the image is too large */
+  }
+  
+
+.remove-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 0.5em 1.5em;
+  background-color: red;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background-color: darkred;
+}

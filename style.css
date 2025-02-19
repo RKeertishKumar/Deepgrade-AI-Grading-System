@@ -1,0 +1,119 @@
+/* Reset & Basic Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Full-Screen Background (Same for Main & Sub) */
+body {
+    background-image: url('https://i.ibb.co/n8fJGcJ7/Whats-App-Image-2025-02-16-at-12-16-28-62f1ccf6.jpg'); /* Updated Background */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Content Holder */
+.main-container {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Centered DeepGrade Box */
+.container {
+    text-align: center;
+}
+
+/* Soft Neon Purple Text */
+.neon-text {
+    color: #9400D3; /* Deep Purple */
+    text-shadow: 0 0 5px rgba(148, 0, 211, 0.5); /* Softer glow */
+}
+
+/* Upload Box */
+.upload-box {
+    margin: 20px 0;
+}
+
+.upload-box input {
+    display: none;
+}
+
+.upload-box label {
+    background: #6A0DAD;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.upload-box label:hover {
+    background: #4B0082;
+}
+
+/* Image Preview */
+#image-preview {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.preview-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Analyze Button (Moved Down) */
+.analyze-btn {
+    background: #9400D3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    margin-top: 40px; /* Moved Down */
+}
+
+.analyze-btn:hover {
+    background: #6A0DAD;
+}
+
+/* Centered Analysis Summary */
+.analysis-summary {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #9400D3;
+    text-shadow: 0 0 5px rgba(148, 0, 211, 0.5); /* Softer glow */
+}
+
+/* Image Preview Small and Just Below Upload */
+#image-preview {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.preview-image {
+    width: 80px;  /* Small Image */
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    display: block;
+    margin: 5px auto; /* Just below upload */
+}
