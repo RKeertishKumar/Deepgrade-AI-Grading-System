@@ -1,0 +1,27 @@
+<div class="common-container">
+  <div class="head">
+    <h1>DeepGrade</h1>
+  </div>
+
+  <div class="container">
+    <label for="file-upload" class="upload-icon-wrapper">
+      <img *ngIf="!imageUrl" src="assets/upload.png" alt="Upload Icon" class="upload-icon">
+      <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image">
+      <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/png, image/jpeg" style="display: none;">
+    </label>
+
+    <!-- Remove Image Button -->
+    <button *ngIf="imageUrl" (click)="removeImage()" class="remove-button">Remove</button>
+
+    <p *ngIf="loading">Processing image, please wait...</p>
+    <pre *ngIf="responseText">{{ responseText }}</pre>
+  </div>
+
+  <div class="button-wrapper">
+    <button (click)="analyzeImage()" [disabled]="!fileSelected || loading">
+      ANALYZE ✨
+    </button>
+  </div>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+</div>

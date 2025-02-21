@@ -1,0 +1,88 @@
+/* Reuse the same styles from AnalyzerComponent */
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600&display=swap');
+
+.common-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center elements vertically */
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  gap: 20px; /* Equal spacing between elements */
+}
+
+.head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+  margin-top: 0;
+}
+
+.head h1 {
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 600;
+  color: #f0f0f0;
+}
+
+/* Adjust the container for the response page */
+.response-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+  align-items: center;
+  background-color: #080B23;
+  border: 2px solid #7054FF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(112, 84, 255, 0.5);
+  width: 800px; /* Wider container for larger responses */
+  height: 70%; /* Taller container for larger responses */
+  margin-top: 0;
+  overflow-y: auto; /* Allow vertical scrolling */
+  padding: 20px;
+}
+
+.response-container h2 {
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin-bottom: 20px; /* Spacing below the heading */
+}
+
+.response-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* Allow scrolling for long responses */
+  color: #f0f0f0;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+pre {
+  white-space: pre-wrap; /* Ensure text wraps */
+  word-wrap: break-word; /* Break long words */
+  margin: 0; /* Remove default margin */
+}
+.response-content ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .response-content li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #1a1a2e; /* Dark background for each bullet point */
+    border-radius: 5px;
+    color: #f0f0f0;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .response-content strong {
+    color: #7054FF; /* Highlight key phrases with a different color */
+    font-weight: 600;
+  }
