@@ -1,88 +1,181 @@
-/* Reuse the same styles from AnalyzerComponent */
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600&display=swap');
+
+/* Base Styles */
+$primary-color: #7054FF;
+$bg-color: #080B23;
+$card-bg: #1A1A2E;
+$text-color: #f0f0f0;
+$success-color: #4CAF50;
+$warning-color: #FFC107;
+$error-color: #F44336;
 
 .common-container {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center elements vertically */
   align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  gap: 20px; /* Equal spacing between elements */
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'League Spartan', sans-serif;
+  color: $text-color;
 }
 
 .head {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  h1 {
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+/* Side-by-side Layout */
+.content-row {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 20%;
+  gap: 2rem;
   width: 100%;
-  margin-top: 0;
+  max-width: 1400px;
 }
 
-.head h1 {
-  font-family: 'League Spartan', sans-serif;
-  font-weight: 600;
-  color: #f0f0f0;
-}
-
-/* Adjust the container for the response page */
-.response-container {
+.score-column {
+  flex: 1;
+  min-width: 350px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align content to the top */
-  align-items: center;
-  background-color: #080B23;
-  border: 2px solid #7054FF;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(112, 84, 255, 0.5);
-  width: 800px; /* Wider container for larger responses */
-  height: 70%; /* Taller container for larger responses */
-  margin-top: 0;
-  overflow-y: auto; /* Allow vertical scrolling */
-  padding: 20px;
+  gap: 2rem;
 }
 
-.response-container h2 {
-  font-family: 'League Spartan', sans-serif;
+.response-column {
+  flex: 2;
+}
+
+/* Shared Card Styles */
+%card {
+  background-color: $bg-color;
+  border: 2px solid $primary-color;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba($primary-color, 0.5);
+  padding: 1.5rem;
+}
+
+/* Score Components */
+.score-container {
+  @extend %card;
+  text-align: center;
+  
+  h2 {
+    margin-top: 0;
+    font-weight: 500;
+  }
+}
+
+.score-display {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: conic-gradient(var(--score-color) var(--score-percent), darken($bg-color, 5%) var(--score-percent));
+  display: flex; // Add flex display
+  justify-content: center; // Center horizontally
+  align-items: center; // Center vertically
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    background: $bg-color;
+    border: 2px solid $primary-color;
+    border-radius: 50%;
+  }
+}
+
+.score-value {
+  position: relative;
+  font-size: 28px;
   font-weight: 600;
-  color: #f0f0f0;
-  margin-bottom: 20px; /* Spacing below the heading */
+  z-index: 1; // Ensure it appears above the ::before pseudo-element
+  // Remove any margins or padding that might affect centering
+  margin: 0;
+  padding: 0;
+}
+
+/* Response Container */
+.response-container {
+  @extend %card;
+  height: 70vh;
+  overflow-y: auto;
+  
+  h2 {
+    margin-top: 0;
+    font-weight: 600;
+  }
 }
 
 .response-content {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto; /* Allow scrolling for long responses */
-  color: #f0f0f0;
-  font-family: 'League Spartan', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-pre {
-  white-space: pre-wrap; /* Ensure text wraps */
-  word-wrap: break-word; /* Break long words */
-  margin: 0; /* Remove default margin */
-}
-.response-content ul {
-    list-style-type: none; /* Remove default bullet points */
+  ul {
+    list-style: none;
     padding: 0;
     margin: 0;
   }
   
-  .response-content li {
+  li {
     padding: 10px;
     margin: 5px 0;
-    background-color: #1a1a2e; /* Dark background for each bullet point */
+    background: $card-bg;
     border-radius: 5px;
-    color: #f0f0f0;
-    font-family: 'League Spartan', sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
   }
   
-  .response-content strong {
-    color: #7054FF; /* Highlight key phrases with a different color */
+  strong {
+    color: $primary-color;
     font-weight: 600;
   }
+}
+
+/* Grading Criteria */
+.criteria-list {
+  @extend %card;
+  
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.criteria-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  background: $card-bg;
+  border-radius: 5px;
+  border-left: 4px solid transparent;
+  
+  &.matched {
+    border-left-color: $success-color;
+  }
+  
+  .criteria-weight {
+    color: $primary-color;
+    font-weight: 600;
+  }
+}
+
+.criteria-match {
+  background-color: rgba($success-color, 0.2);
+  padding: 2px 4px;
+  border-radius: 3px;
+  border-bottom: 1px dashed $success-color;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .content-row {
+    flex-direction: column;
+  }
+  
+  .score-column, 
+  .response-column {
+    width: 100%;
+    min-width: auto;
+  }
+}

@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { OllamaService } from '../../services/ollama.service';
 
 @Component({
   selector: 'app-analyzer',
   templateUrl: './analyzer.component.html',
   styleUrls: ['./analyzer.component.scss']
 })
-
 export class AnalyzerComponent {
   loading = false;
   responseText = '';
@@ -16,7 +15,11 @@ export class AnalyzerComponent {
   imageUrl: string | null = null;
   errorMessage: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router, private ngxService: NgxUiLoaderService) {}
+  constructor(
+    private ollamaService: OllamaService,
+    private router: Router, 
+    private ngxService: NgxUiLoaderService
+  ) {}
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -41,78 +44,68 @@ export class AnalyzerComponent {
     if (this.fileSelected) {
       this.loading = true;
       this.responseText = '';
-      this.ngxService.start(); // Show loader
+      this.ngxService.start();
 
       const reader = new FileReader();
       reader.onload = () => {
         const base64Image = reader.result?.toString().split(',')[1]?.trim();
 
         if (base64Image) {
-          this.sendToOllama(base64Image);
+          this.ollamaService.analyzeImage(base64Image).subscribe({
+            next: (responseText: string) => this.handleApiResponse(responseText),
+            error: (error) => this.handleApiError(error)
+          });
         } else {
-          this.loading = false;
-          this.ngxService.stop(); // Hide loader
-          this.errorMessage = 'Failed to read image!';
+          this.handleImageReadError();
         }
       };
       reader.readAsDataURL(this.fileSelected);
     }
   }
 
-  sendToOllama(base64Image: string) {
-    const requestBody = {
-      model: 'llama3.2-vision',
-      messages: [
-        {
-          role: 'user',
-          content: 'Analyze this image',
-          images: [base64Image]
-        }
-      ]
-    };
+  private handleApiResponse(responseText: string) {
+    this.loading = false;
+    this.ngxService.stop();
 
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    try {
+      console.log('Raw Response:', responseText);
+      const jsonObjects = responseText.split('\n').filter(line => line.trim() !== '');
+      let finalResponse = '';
 
-    this.http.post('http://localhost:11434/api/chat', requestBody, { headers, responseType: 'text' }).subscribe(
-      (responseText: string) => {
-        this.loading = false;
-        this.ngxService.stop(); // Hide loader
-
+      for (const jsonString of jsonObjects) {
         try {
-          console.log('Raw Response:', responseText);
-          const jsonObjects = responseText.split('\n').filter(line => line.trim() !== '');
-          let finalResponse = '';
-
-          for (const jsonString of jsonObjects) {
-            try {
-              const jsonResponse = JSON.parse(jsonString);
-              if (jsonResponse.message && jsonResponse.message.content) {
-                finalResponse += jsonResponse.message.content;
-              }
-            } catch (error) {
-              console.error('Error parsing JSON chunk:', error);
-            }
+          const jsonResponse = JSON.parse(jsonString);
+          if (jsonResponse.message && jsonResponse.message.content) {
+            finalResponse += jsonResponse.message.content;
           }
-
-          this.responseText = finalResponse;
-
-          // Debugging: Log the final response and navigation attempt
-          console.log('Final Response:', finalResponse);
-          console.log('Navigating to /response-page...');
-
-          // Navigate to the response page with the response data
-          this.router.navigate(['/response-page'], { queryParams: { response: finalResponse } });
         } catch (error) {
-          console.error('Error processing API response:', error);
-          this.responseText = 'Error processing API response!';
+          console.error('Error parsing JSON chunk:', error);
         }
-      },
-      (error) => {
-        this.loading = false;
-        this.ngxService.stop(); // Hide loader
-        console.error('Ollama API Error:', error);
-        this.errorMessage = 'Error analyzing image!';
       }
-    );
+
+      this.responseText = finalResponse;
+      console.log('Final Response:', finalResponse);
+      console.log('Navigating to /response-page...');
+
+      this.router.navigate(['/response-page'], { 
+        queryParams: { response: finalResponse } 
+      });
+    } catch (error) {
+      console.error('Error processing API response:', error);
+      this.responseText = 'Error processing API response!';
+    }
+  }
+
+  private handleApiError(error: any) {
+    this.loading = false;
+    this.ngxService.stop();
+    console.error('Ollama API Error:', error);
+    this.errorMessage = 'Error analyzing image!';
+  }
+
+  private handleImageReadError() {
+    this.loading = false;
+    this.ngxService.stop();
+    this.errorMessage = 'Failed to read image!';
   }
 }

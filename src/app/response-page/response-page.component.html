@@ -1,12 +1,40 @@
 <div class="common-container">
-    <div class="head">
-      <h1>DeepGrade</h1>
+  <div class="head">
+    <h1>DeepGrade</h1>
+  </div>
+
+  <div class="content-row">
+    <!-- Score Display Section -->
+    <div class="score-column">
+      <div class="score-container">
+        <h2 class="score-label">Accuracy Score</h2>
+        <div class="score-display" 
+             [style.--score-color]="scoreColor" 
+             [style.--score-percent]="(score/maxScore)*360 + 'deg'">
+          <span class="score-value">{{score}}%</span>
+        </div>
+      </div>
+
+      <!-- Grading Criteria Breakdown -->
+      <div class="criteria-list">
+        <h3>Grading Criteria</h3>
+        <div *ngFor="let criteria of gradingCriteria" 
+             class="criteria-item" 
+             [class.matched]="criteria.matched">
+          <span class="criteria-name">{{criteria.name}}</span>
+          <span class="criteria-weight">{{criteria.weight}}%</span>
+        </div>
+      </div>
     </div>
-  
-    <div class="response-container">
-      <h2>Analysis Response</h2>
-      <div class="response-content">
-        <div [innerHTML]="formattedResponse"></div>
+
+    <!-- Main Response Container -->
+    <div class="response-column">
+      <div class="response-container">
+        <h2>Analysis Response</h2>
+        <div class="response-content">
+          <div [innerHTML]="formattedResponse"></div>
+        </div>
       </div>
     </div>
   </div>
+</div>
