@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { GradingService } from '../../services/grading.service';
 
 @Component({
   selector: 'app-response-page',
@@ -46,13 +47,34 @@ export class ResponsePageComponent implements OnInit {
     }
   ];
 
-  constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer) {}
+  constructor(
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer,
+    private gradingService: GradingService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.responseText = params['response'];
-      this.formattedResponse = this.formatResponse(this.responseText);
-      this.calculateScore(this.responseText);
+      this.gradingService.gradeResponse(this.responseText).subscribe({
+        next: (result) => {
+          this.score = result.score;
+          this.maxScore = result.max_score;
+          this.scoreColor = result.score_color;
+          this.formattedResponse = this.sanitizer.bypassSecurityTrustHtml(result.formatted_response);
+          
+          // Update criteria matches
+          this.gradingCriteria.forEach(criteria => {
+            criteria.matched = result.matched_criteria.includes(criteria.name);
+          });
+        },
+        error: (err) => {
+          console.error('Error grading response:', err);
+          // Fallback to client-side grading
+          this.formattedResponse = this.formatResponse(this.responseText);
+          this.calculateScore(this.responseText);
+        }
+      });
     });
   }
 
