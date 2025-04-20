@@ -11,6 +11,33 @@ flowchart LR
     C[Gate] -->|Fail| B[LLM Call 1]
     D[LLM Call 2] -->|Pass| E[LLM Call 3]
 ```
+
+## Consistency Rule Engine Architecture
+
+```mermaid
+flowchart TD
+    A[Start] --> B[Validate Image Path]
+    B --> C{Image Valid?}
+    C -- No --> D[Return Error: "Invalid image file"]
+    C -- Yes --> E[Compute Image Hash]
+    E --> F[Phase 1: Flowchart Extraction]
+    F --> G[Call Extraction Model (llama3.2-vision)]
+    G --> H[Extract Raw JSON (nodes, edges)]
+    H --> I[Normalize JSON Structure]
+    I --> J{JSON Valid?}
+    J -- No --> K[Retry Extraction with increased Temperature/Seed]
+    K --> I
+    J -- Yes --> L[Phase 2: Node Classification]
+    L --> M[Send raw nodes to Classification LLM (granite3.2-vision)]
+    M --> N[Receive Classified Nodes (JSON array)]
+    N --> O[Update JSON with Classified Node Types]
+    O --> P[Phase 3: Graph-Based Logic Evaluation]
+    P --> Q[Run Logic Tests (e.g., LT_1 ... LT_6)]
+    Q --> R[Aggregate Test Scores (Weighted)]
+    R --> S[Normalize to Final Score (0-100)]
+    S --> T[Output Final Score, Details, and Updated JSON]
+    T --> U[End]
+```
 ### We use a logic gateway based verificaition of the output before moving along the prompt chaining approach.
 
 ## Multi LLM Orchestration Tool Architecture Diagram
