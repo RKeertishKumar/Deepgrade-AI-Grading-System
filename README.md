@@ -54,6 +54,42 @@ flowchart LR
     J --> K[Output]
 ```
 
+## 🔥 Temperature Tuning for Consistent LLM Grading
+
+### What is Temperature in LLMs?
+
+- **Temperature** is a parameter that controls the randomness of the model’s output.
+- Lower values make the model more deterministic and factual.
+- Higher values make the model more creative and varied, but less consistent.
+
+
+### Key Points
+
+- **Low temperature (0–0.3):**
+    - Deterministic, consistent, and factual outputs
+    - Ideal for grading, scoring, and production use
+- **High temperature (0.7–1.5):**
+    - More creative, varied, and less consistent outputs
+    - Good for brainstorming or creative tasks, not for grading
+- **Best Practice:**
+    - For grading and production, always tune and test for consistency before deployment.
+
+---
+
+### Temperature Tuning Workflow
+
+```mermaid
+flowchart LR
+    A["Start: Need Consistent Grades"] --> B["Set Initial Temperature (e.g., 0.7)"]
+    B --> C["Generate Output & Evaluate Consistency"]
+    C --> D{"Are Grades Consistent<br/>(across runs)?"}
+    D -- "Yes" --> E["Lock in Temperature<br/>(Use for Production)"]
+    D -- "No" --> F["Adjust Temperature<br/>(Lower for More Consistency,<br/>Higher for More Variety)"]
+    F --> G["Repeat Evaluation"]
+    G --> C
+    E --> H["Deploy Grader"]
+```
+
 ## Roadmap
 Here's a glimpse of what's on the horizon:
 | Feature                                   | Status          |
