@@ -135,6 +135,8 @@ $error-color: #F44336;
 /* Grading Criteria */
 .criteria-list {
   @extend %card;
+  max-height: 300px; /* Adjust this value as needed */
+  overflow-y: auto; /* Enables vertical scrolling when content exceeds height */
   
   h3 {
     margin-top: 0;

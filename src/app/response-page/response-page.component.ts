@@ -14,35 +14,48 @@ export class ResponsePageComponent implements OnInit {
   score: number = 0;
   maxScore: number = 100;
   scoreColor: string = '#7054FF';
+
   gradingCriteria: any[] = [
     { 
-      name: 'Correct Algorithm', 
-      pattern: /(correct algorithm|proper steps|accurate logic)/i, 
-      weight: 30,
-      matched: false
-    },
-    { 
-      name: 'Flowchart Structure', 
-      pattern: /(begin|start|end|terminator|decision|process)/i, 
-      weight: 25,
-      matched: false
-    },
-    { 
-      name: 'Variable Usage', 
-      pattern: /(variable|declare|initialize|assign)/i, 
+      name: 'S1: Start-End Node Check', 
+      pattern: /(start.*node|end.*node|Start Terminator|End Terminator)/i, 
       weight: 20,
       matched: false
     },
     { 
-      name: 'Loop Logic', 
-      pattern: /(while|for|loop|repeat|until)/i, 
+      name: 'S2: Unique Sequential Node IDs Check', 
+      pattern: /(unique.*id|sequential.*id|node.*identifier)/i, 
       weight: 15,
       matched: false
     },
     { 
-      name: 'Output Mention', 
-      pattern: /(output|print|display|result)/i, 
+      name: 'S3: Valid Node Types Check', 
+      pattern: /(valid.*node.*type|start|end|process|decision)/i, 
+      weight: 15,
+      matched: false
+    },
+    { 
+      name: 'S4: Connected Nodes Check', 
+      pattern: /(connected.*nodes|no.*isolated.*node)/i, 
+      weight: 15,
+      matched: false
+    },
+    { 
+      name: 'S5: Decision Node Outgoing Edges Check', 
+      pattern: /(decision.*node.*two.*outgoing|yes.*no)/i, 
       weight: 10,
+      matched: false
+    },
+    { 
+      name: 'S6: Clear Labels Check', 
+      pattern: /(clear.*label|meaningful.*label)/i, 
+      weight: 10,
+      matched: false
+    },
+    { 
+      name: 'S7: Complete Path from Start to End Check', 
+      pattern: /(complete.*path.*start.*end|reachable.*end)/i, 
+      weight: 15,
       matched: false
     }
   ];
@@ -70,7 +83,6 @@ export class ResponsePageComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error grading response:', err);
-          // Fallback to client-side grading
           this.formattedResponse = this.formatResponse(this.responseText);
           this.calculateScore(this.responseText);
         }
@@ -81,7 +93,6 @@ export class ResponsePageComponent implements OnInit {
   calculateScore(response: string) {
     this.score = 0;
     
-    // Check each grading criteria
     this.gradingCriteria.forEach(criteria => {
       criteria.matched = criteria.pattern.test(response);
       if (criteria.matched) {
@@ -89,7 +100,6 @@ export class ResponsePageComponent implements OnInit {
       }
     });
 
-    // Set score color based on performance
     if (this.score >= 80) {
       this.scoreColor = '#4CAF50'; // Green
     } else if (this.score >= 50) {
@@ -102,19 +112,14 @@ export class ResponsePageComponent implements OnInit {
   formatResponse(response: string): SafeHtml {
     let formattedText = response;
 
-    // Replace * with <li> for bullet points
     formattedText = formattedText.replace(/\*\s*(.*?)\n/g, '<li>$1</li>');
-
-    // Wrap the entire content in a <ul> tag
     formattedText = `<ul>${formattedText}</ul>`;
 
-    // Highlight key phrases
     const highlightPhrases = ['Read:', 'If', 'Result =', 'Beg =', 'End =', 'Mid ='];
     highlightPhrases.forEach(phrase => {
       formattedText = formattedText.replace(new RegExp(phrase, 'g'), `<strong>${phrase}</strong>`);
     });
 
-    // Highlight grading criteria matches
     this.gradingCriteria.forEach(criteria => {
       if (criteria.matched) {
         formattedText = formattedText.replace(criteria.pattern, match => 
