@@ -12,3 +12,9 @@ id,question,image,human_grade
 11,Draw a flowchart to show the steps involved in making a cup of tea.,11.jpg,9
 12,Draw a flowchart to show the steps involved in making a cheese Cake.,12.jpg,9
 13,Draw a flowchart to show the steps involved in making a cup of tea.,13.jpg,9
+14,Draw a flowchart to reverse a given number.,14.jpg,5
+15,Draw a flowchart to calculate the sum of digits of a given number.,15.jpg,6
+16,Draw a flowchart to compute the factorial of a given number n.,16.jpg,7
+17,Draw a flowchart to check whether a given number is even or odd.,17.jpg,5
+18,Draw a flowchart to print the first n terms of the Fibonacci sequence.,18.jpg,6
+19,Draw a flowchart to read three numbers a, b, and c, and print the largest among them.,19.jpg,6
