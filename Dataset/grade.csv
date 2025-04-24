@@ -18,3 +18,7 @@ id,question,image,human_grade
 17,Draw a flowchart to check whether a given number is even or odd.,17.jpg,5
 18,Draw a flowchart to print the first n terms of the Fibonacci sequence.,18.jpg,6
 19,Draw a flowchart to read three numbers a, b, and c, and print the largest among them.,19.jpg,6
+20,Draw a flowchart to print the multiplication table of a given number n up to 10.,20.jpg,7
+21,Draw a flowchart to calculate simple interest given principal P, rate R, and time T.,21.jpg,4
+22,Draw a flowchart to check whether a number n is a prime number or not.,22.jpg,6
+23,Draw a flowchart to check whether a given year is a leap year.,23.jpg,5
