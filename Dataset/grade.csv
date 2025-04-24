@@ -2,3 +2,13 @@ id,question,image,human_grade
 1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,9
 2,Draw a flowchart to illustrate the process of inserting (pushing) an element into a stack. Clearly handle the overflow condition.,2.jpg,9
 3,Draw a flowchart to calculate a child's allowance based on their age. Use different rates depending on whether the age is below or above 10.,3.jpg,9
+4,Draw a flowchart to check if a person's age is 21 and print the appropriate message.,4.jpg,9
+5,Draw a flowchart to compare two numbers A and B and print the greater value.,5.jpg,9
+6,Draw a flowchart to solve a quadratic equation using the discriminant method and output the roots accordingly.,6.jpg,10
+7,Draw a flowchart to traverse and process each element of an array A from a specified lower bound to upper bound using a loop structure.,7.jpg,10
+8,Draw a flowchart to illustrate the steps involved in buying a book from an online store.,8.jpg,10
+9,Draw a flowchart to determine how different creatures should handle their waste in the wild. Include humorous decision points for humans, animals, and hikers.,9.jpg,10
+10,Draw a flowchart to perform two sequential steps followed by a decision. Loop back to the start if the condition is not met.,10.jpg,9
+11,Draw a flowchart to show the steps involved in making a cup of tea.,11.jpg,9
+12,Draw a flowchart to show the steps involved in making a cheese Cake.,12.jpg,9
+13,Draw a flowchart to show the steps involved in making a cup of tea.,13.jpg,9
