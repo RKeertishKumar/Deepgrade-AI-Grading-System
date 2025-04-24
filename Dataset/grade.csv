@@ -1,2 +1,4 @@
 id,question,image,human_grade
 1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,9
+2,Draw a flowchart to illustrate the process of inserting (pushing) an element into a stack. Clearly handle the overflow condition.,2.jpg,9
+3,Draw a flowchart to calculate a child's allowance based on their age. Use different rates depending on whether the age is below or above 10.,3.jpg,9
