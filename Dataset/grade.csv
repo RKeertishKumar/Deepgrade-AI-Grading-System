@@ -7,7 +7,7 @@ id,question,image,human_grade
 6,Draw a flowchart to solve a quadratic equation using the discriminant method and output the roots accordingly.,6.jpg,10
 7,Draw a flowchart to traverse and process each element of an array A from a specified lower bound to upper bound using a loop structure.,7.jpg,10
 8,Draw a flowchart to illustrate the steps involved in buying a book from an online store.,8.jpg,10
-9,Draw a flowchart to determine how different creatures should handle their waste in the wild. Include humorous decision points for humans, animals, and hikers.,9.jpg,10
+9,"Draw a flowchart to determine how different creatures should handle their waste in the wild. Include humorous decision points for humans, animals, and hikers.",9.jpg,10
 10,Draw a flowchart to perform two sequential steps followed by a decision. Loop back to the start if the condition is not met.,10.jpg,9
 11,Draw a flowchart to show the steps involved in making a cup of tea.,11.jpg,9
 12,Draw a flowchart to show the steps involved in making a cheese Cake.,12.jpg,9
@@ -17,8 +17,8 @@ id,question,image,human_grade
 16,Draw a flowchart to compute the factorial of a given number n.,16.jpg,7
 17,Draw a flowchart to check whether a given number is even or odd.,17.jpg,5
 18,Draw a flowchart to print the first n terms of the Fibonacci sequence.,18.jpg,6
-19,Draw a flowchart to read three numbers a, b, and c, and print the largest among them.,19.jpg,6
+19,"Draw a flowchart to read three numbers a, b, and c, and print the largest among them.",19.jpg,6
 20,Draw a flowchart to print the multiplication table of a given number n up to 10.,20.jpg,7
-21,Draw a flowchart to calculate simple interest given principal P, rate R, and time T.,21.jpg,4
+21,"Draw a flowchart to calculate simple interest given principal P, rate R, and time T.",21.jpg,4
 22,Draw a flowchart to check whether a number n is a prime number or not.,22.jpg,6
 23,Draw a flowchart to check whether a given year is a leap year.,23.jpg,5
