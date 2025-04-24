@@ -1,0 +1,3 @@
+id,question,image,human_grade,LT_1,LT_2,PT_4,ai_grade
+1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,9,True,False,,
+2,Draw a flowchart to illustrate the process of inserting (pushing) an element into a stack. Clearly handle the overflow condition.,2.jpg,9,True,False,False,3.0
