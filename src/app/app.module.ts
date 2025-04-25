@@ -16,7 +16,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button'; // For Ant Design buttons
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader'; // Importing NgxUiLoaderModule and SPINNER
 
-import { ResponsePageComponent } from './response-page/response-page.component'; // For Ant Design icons
+import { ResponsePageComponent } from './response-page/response-page.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'; // For Ant Design icons
+import {MatInputModule} from '@angular/material/input';
 
 registerLocaleData(en);
 
@@ -43,10 +45,13 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     BrowserAnimationsModule,  // Required for animations in ng-zorro
     NzButtonModule,           // Import for buttons
     NzIconModule,             // Import for icons
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), // Importing and configuring NgxUiLoaderModule
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    MatInputModule
+    
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]
 })

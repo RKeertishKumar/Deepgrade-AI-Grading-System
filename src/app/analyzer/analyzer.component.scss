@@ -4,18 +4,18 @@
 .common-container {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center elements vertically */
+  justify-content: center;
   align-items: center;
   height: 100vh;
   overflow: hidden;
-  gap: 20px; /* Equal spacing between elements */
+  gap: 20px;
 }
 
 .head {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 20%;
+  height: 10%;
   width: 100%;
   margin-top: 0;
 }
@@ -23,31 +23,98 @@
 .head h1 {
   font-family: 'League Spartan', sans-serif;
   font-weight: 600;
-  color: #f0f0f0;
+  color: #f0f0f0; /* Light text */
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.input-field-wrapper {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.question-input {
+  width: 100%;
+  margin-bottom: 20px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+
+  textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    color: #f0f0f0; /* Light text inside textarea */
+    
+    border: 1px solid #7054FF; /* Light purple border */
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  textarea:focus {
+    outline: none;
+    border-color: #7054FF; /* Border color on focus */
+  }
 }
 
 .container {
   display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: center; /* Centers vertically */
-  background-color: #080B23;
-  border: 2px solid #7054FF;
+  justify-content: center;
+  align-items: center;
+  background-color: #080B23; /* Dark container background */
+  border: 2px solid #7054FF; /* Purple border */
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(112, 84, 255, 0.5);
+  box-shadow: 0 0 15px rgba(112, 84, 255, 0.5);
   width: 624px;
   height: 60%;
   margin-top: 0;
-  overflow: hidden; /* Prevents content from overflowing */
+  overflow: hidden;
   position: relative;
-  flex-direction: column; /* Ensures elements stack properly */
+  flex-direction: column;
   padding: 20px;
 }
 
 .upload-icon {
-  width: 50px; 
+  width: 50px;
   height: 50px;
   opacity: 0.9;
   transition: transform 0.3s ease;
+}
+
+.uploaded-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 5px;
+  display: block;
+}
+
+.remove-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 0.5em 1.5em;
+  background-color: #FF4C4C; /* Red background */
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background-color: #D32F2F; /* Darker red on hover */
+}
+
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 button {
@@ -87,44 +154,54 @@ button:hover::after {
   transform: scale(1.15);
 }
 
-.button-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between button and icon */
+.error-message {
+  color: #FF4C4C; /* Red color for errors */
+  font-size: 1rem;
+}
+.custom-question-input {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
 }
 
-.uploaded-image {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain; /* Ensures the image maintains aspect ratio */
-    border-radius: 5px;
-    display: block;
-  }
-  
-  .image-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Allows scrolling if the image is too large */
-  }
-  
-
-.remove-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  padding: 0.5em 1.5em;
-  background-color: red;
+.question-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 15px;
+  background-color: #080B23;
   border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 8px;
+  color: #f0f0f0;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+  resize: vertical;
+  position: relative;
+  z-index: 1;
+  
+  &::placeholder {
+    color: rgba(240, 240, 240, 0.6);
+    font-weight: 400;
+  }
+  
+  &:focus {
+    outline: none;
+  }
 }
 
-.remove-button:hover {
-  background-color: darkred;
+.question-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  padding: 2px;
+  background: linear-gradient(135deg, #7054FF, #E100FF);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
 }

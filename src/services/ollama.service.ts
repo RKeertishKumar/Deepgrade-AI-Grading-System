@@ -10,9 +10,11 @@ export class OllamaService {
 
   constructor(private http: HttpClient) {}
 
-  analyzeImage(base64Image: string): Observable<string> {
-    const FLOWCHART_PROMPT = `
-You are an expert in evaluating flowcharts from images.
+  analyzeImage(base64Image: string, userQuestion: string = ''): Observable<string> {
+    // Use the user's question if provided, otherwise use the default flowchart prompt
+    const prompt = userQuestion.trim() !== '' ? 
+      userQuestion : 
+      `You are an expert in evaluating flowcharts from images.
 
 Analyze the attached flowchart image. Perform the following checks:
 
@@ -33,17 +35,16 @@ For each check:
 
 Then output:
 - Total score out of 100
-- Final comment on the flowchart’s quality
+- Final comment on the flowchart's quality
 
-Be concise and accurate. Assume professional use.
-`;
+Be concise and accurate. Assume professional use.`;
 
     const requestBody = {
       model: 'llama3.2-vision',
       messages: [
         {
           role: 'user',
-          content: FLOWCHART_PROMPT,
+          content: prompt,
           images: [base64Image]
         }
       ]
