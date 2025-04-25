@@ -1,0 +1,10 @@
+rule_id,rule_description,rule_action,points_to_deduct
+1,All variables used in the flowchart/diagram must be properly initialized before use,"Deduct points if any variable is found uninitialized",1
+2,The algorithm should match the expected scope and complexity of the question,"Deduct points if the algorithm is unnecessarily complex or beyond scope",1
+3,The submitted image or diagram must be clear and legible,"Flag for manual grading",10
+4,"If the diagram is too complex, contains multiple diagrams, or is ambiguous, flag for human review","Flag for manual grading",10
+5,The flowchart must include an end node (terminator),"Deduct points if the end node is missing",1
+6,All decision nodes must be clearly labeled with 'Yes/No' or appropriate conditions,"Deduct points if decision nodes are not specified with outcomes",1
+7,Loops in the flowchart must be represented with correct loop arrows,"Deduct points if loop arrows are missing",1
+8,"The correct type of box/shape must be used for each node (e.g., rectangles for processes, diamonds for decisions)","Deduct points if wrong boxes are used",1
+9,Every node must be properly enclosed within its designated box/shape,"Deduct points if nodes are not in boxes or are improperly represented",1
