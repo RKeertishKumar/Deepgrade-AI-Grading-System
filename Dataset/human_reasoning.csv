@@ -1,24 +1,24 @@
-image_id,human_grade,Negative
-1,7,Variables not Initialized properly; Algorithms is complex and beyond scope of question
-2,9,Variables not Initialized properly;
-3,10,
-4,0,Bad quality image/diagram
-5,10,
-6,0,Bad quality image/diagram
-7,10,
-8,0,Bad quality image/diagram
-9,0,Complex image - require human overview
-10,10,
-11,8,End node not mentioned; Decision nodes not specified with yes or no
-12,10,
-13,0,Mutliple diagrams - require human overview
-14,9,Loop arrow missing
-15,8,Wrong box used for node representation;Loop arrow missing
-16,8,Loop arrow missing;Wrong box used for node representation
-17,8,Wrong box used used for node representation; Node not in box
-18,8,Wrong box used used for node representation;Loop arrow missing
-19,9,Wrong box used used for node representation; Node not in box
-20,8,Wrong box used used for node representation; Node not in box
-21,10,
-22,8,Wrong box used used for node representation;Loop arrow missing
-23,10,0
+image_id,human_grade,Negative,rule_used_1,rule_used_2
+1,7,Variables not Initialized properly; Algorithms is complex and beyond scope of question,rule_1,rule_2
+2,9,Variables not Initialized properly;,rule_1,
+3,10,,, 
+4,,Bad quality image/diagram,rule_3,
+5,10,,,
+6,,Bad quality image/diagram,rule_3,
+7,10,,,
+8,,Bad quality image/diagram,rule_3,
+9,,Complex image - require human overview,rule_4,
+10,10,,,
+11,8,End node not mentioned; Decision nodes not specified with yes or no,rule_5,rule_6
+12,10,,,
+13,,Mutliple diagrams - require human overview,rule_4,
+14,9,Loop arrow missing,rule_7,
+15,8,Wrong box used for node representation;Loop arrow missing,rule_8,rule_7
+16,8,Loop arrow missing;Wrong box used for node representation,rule_7,rule_8
+17,8,Wrong box used used for node representation; Node not in box,rule_8,rule_9
+18,8,Wrong box used used for node representation;Loop arrow missing,rule_8,rule_7
+19,9,Wrong box used used for node representation; Node not in box,rule_8,rule_9
+20,8,Wrong box used used for node representation; Node not in box,rule_8,rule_9
+21,10,,,
+22,8,Wrong box used used for node representation;Loop arrow missing,rule_8,rule_7
+23,10,0,,

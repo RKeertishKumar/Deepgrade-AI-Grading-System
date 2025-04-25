@@ -4,7 +4,7 @@ import re
 import json
 
 # GLOBAL CONFIGURATIONS
-MODEL_NAME = 'gemma3:4b'
+MODEL_NAME = 'llama3.2-vision'
 GRADING_PROMPT = '''You are an AI vision reasoning model. You will receive an image of a flowchart and the scope of the question it is meant to answer. Your task is to analyze the flowchart and, using the following rules, determine whether each rule is satisfied (True) or violated (False). Return your results as a JSON object, where each key is the rule_id and the value is True (rule satisfied) or False (rule violated).
 
         Rules:
@@ -12,7 +12,7 @@ GRADING_PROMPT = '''You are an AI vision reasoning model. You will receive an im
         1. All variables used in the flowchart/diagram must be properly initialized before use.
         2. The algorithm should match the expected scope and complexity of the question.
         3. The submitted image or diagram must be clear and legible.
-        4. If the diagram is too complex, contains multiple diagrams, or is ambiguous, flag for human review.
+        4. If the diagram is too complex, contains multiple diagrams, or is ambiguous, flag false for human review.
         5. The flowchart must include an end node (terminator).
         6. All decision nodes must be clearly labeled with 'Yes/No' or appropriate conditions.
         7. Loops in the flowchart must be represented with correct loop arrows.
@@ -94,7 +94,7 @@ def ollama_func(question, image_path):
 
     # Parse the JSON response using ```json and ``` delimiters
     response_text = content
-    match = re.search(r'json\s*(\{.*?\})\s*', response_text, re.DOTALL) 
+    match = re.search(r'\s*(\{.*?\})\s*', response_text, re.DOTALL) 
     if match: 
         json_str = match.group(1) 
         parsed_json = json.loads(json_str) 
@@ -115,5 +115,8 @@ result_df = pd.DataFrame(list(expanded_results))
 
 df = pd.concat([df, result_df], axis=1)
 
+df['model_name'] = MODEL_NAME
+
 # Save to a new CSV file
-df.to_csv("ai_grade.csv", index=False)
+df.to_csv("ai_grade.csv", mode='a', header=False, index=False)
+

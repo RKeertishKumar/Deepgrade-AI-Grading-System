@@ -1,3 +1,0 @@
-image_id,question,image_path,rule_1,rule_2,rule_3,rule_4,rule_5,rule_6,rule_7,rule_8,rule_9
-1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,True,True,True,True,True,True,True,True,True
-2,Draw a flowchart to illustrate the process of inserting (pushing) an element into a stack. Clearly handle the overflow condition.,2.jpg,True,True,True,True,True,True,True,True,True
