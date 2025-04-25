@@ -14,6 +14,7 @@ export class AnalyzerComponent {
   fileSelected: File | null = null;
   imageUrl: string | null = null;
   errorMessage: string | null = null;
+  userQuestion: string = ''; // Add this line
 
   constructor(
     private ollamaService: OllamaService,
@@ -51,7 +52,7 @@ export class AnalyzerComponent {
         const base64Image = reader.result?.toString().split(',')[1]?.trim();
 
         if (base64Image) {
-          this.ollamaService.analyzeImage(base64Image).subscribe({
+          this.ollamaService.analyzeImage(base64Image, this.userQuestion).subscribe({
             next: (responseText: string) => this.handleApiResponse(responseText),
             error: (error) => this.handleApiError(error)
           });

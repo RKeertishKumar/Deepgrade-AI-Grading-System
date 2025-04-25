@@ -3,11 +3,23 @@
     <h1>DeepGrade</h1>
   </div>
 
+  <div class="input-field-wrapper">
+    <!-- Custom styled question input field -->
+    <div class="custom-question-input">
+      <textarea 
+        [(ngModel)]="userQuestion" 
+        placeholder="Enter your question about the image..."
+        class="question-textarea"
+      ></textarea>
+      <div class="question-border"></div>
+    </div>
+  </div>
+
   <div class="container">
     <label for="file-upload" class="upload-icon-wrapper">
       <img *ngIf="!imageUrl" src="assets/upload.png" alt="Upload Icon" class="upload-icon">
       <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image">
-      <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/png, image/jpeg" style="display: none;">
+      <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/png, image/jpeg" style="display: none;" required>
     </label>
 
     <!-- Remove Image Button -->
@@ -18,7 +30,7 @@
   </div>
 
   <div class="button-wrapper">
-    <button (click)="analyzeImage()" [disabled]="!fileSelected || loading">
+    <button mat-raised-button (click)="analyzeImage()" [disabled]="!fileSelected || loading">
       ANALYZE ✨
     </button>
   </div>
