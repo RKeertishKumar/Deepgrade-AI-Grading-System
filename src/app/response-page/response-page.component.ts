@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { GradingService } from '../../services/grading.service';
+
 
 @Component({
   selector: 'app-response-page',
@@ -14,98 +14,216 @@ export class ResponsePageComponent implements OnInit {
   score: number = 0;
   maxScore: number = 100;
   scoreColor: string = '#7054FF';
+  detailedFeedback: string[] = [];
+  showDetails: boolean = false;
 
-  // Enhanced grading criteria with more flexible regex
   gradingCriteria: any[] = [
-    { name: 'S1: Start-End Node Check', pattern: /(?:start|beginning).*?(?:end|finish)/i, weight: 20, matched: false },
-    { name: 'S2: Unique Sequential Node IDs Check', pattern: /(?:unique|sequential).*?\d+\/\d+/i, weight: 15, matched: false },
-    { name: 'S3: Valid Node Types Check', pattern: /(?:start|end|process|decision|action|operation|valid.*type)/i, weight: 15, matched: false },
-    { name: 'S4: Connected Nodes Check', pattern: /(?:connected|isolated|linked|disconnected)/i, weight: 15, matched: false },
-    { name: 'S5: Decision Node Outgoing Edges Check', pattern: /(?:yes|no).*?outgoing/i, weight: 10, matched: false },
-    { name: 'S6: Clear Labels Check', pattern: /(?:clear|meaningful|descriptive).*?label/i, weight: 10, matched: false },
-    { name: 'S7: Complete Path from Start to End Check', pattern: /(?:path|sequence).*?(start.*?end|complete.*?path)/i, weight: 15, matched: false }
+    {
+      name: 'S1: Start-End Node Check',
+      patterns: [
+        /start|end/i,
+        /begin|finish/i,
+        /first.*last/i
+      ],
+      weight: 20,
+      matched: false,
+      feedback: {
+        positive: 'Start and end nodes mentioned',
+        negative: 'Start or end nodes not clearly mentioned'
+      }
+    },
+    {
+      name: 'S2: Node IDs Check',
+      patterns: [
+        /id/i,
+        /number/i,
+        /identif/i
+      ],
+      weight: 15,
+      matched: false,
+      feedback: {
+        positive: 'Node identification mentioned',
+        negative: 'Node identification not discussed'
+      }
+    },
+    {
+      name: 'S3: Node Types Check',
+      patterns: [
+        /node/i,
+        /type/i,
+        /start|end|process|decision/i
+      ],
+      weight: 15,
+      matched: false,
+      feedback: {
+        positive: 'Node types referenced',
+        negative: 'Node types not specified'
+      }
+    },
+    {
+      name: 'S4: Node Connections',
+      patterns: [
+        /connect/i,
+        /arrow/i,
+        /flow/i
+      ],
+      weight: 15,
+      matched: false,
+      feedback: {
+        positive: 'Node connections mentioned',
+        negative: 'Node connections not addressed'
+      }
+    },
+    {
+      name: 'S5: Decision Branches',
+      patterns: [
+        /decision/i,
+        /branch/i,
+        /yes|no/i
+      ],
+      weight: 10,
+      matched: false,
+      feedback: {
+        positive: 'Decision branches referenced',
+        negative: 'Decision branching not mentioned'
+      }
+    },
+    {
+      name: 'S6: Node Labels',
+      patterns: [
+        /label/i,
+        /name/i,
+        /description/i
+      ],
+      weight: 10,
+      matched: false,
+      feedback: {
+        positive: 'Labels discussed',
+        negative: 'Labels not addressed'
+      }
+    },
+    {
+      name: 'S7: Flow Completion',
+      patterns: [
+        /path/i,
+        /start.*end/i,
+        /flow/i
+      ],
+      weight: 15,
+      matched: false,
+      feedback: {
+        positive: 'Flow completion mentioned',
+        negative: 'Flow completion not discussed'
+      }
+    }
   ];
 
   constructor(
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer,
-    private gradingService: GradingService
-  ) {
-    console.log('Component initialized - constructor');
-  }
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
-    console.log('ngOnInit triggered');
-    
     this.route.queryParams.subscribe(params => {
-      console.log('Query params received:', params);
       this.responseText = params['response'] || '';
-      console.log('Response text set:', this.responseText);
+      this.detailedFeedback = [];
 
       if (this.responseText.trim() !== '') {
-        console.log('Processing response text...');
-        this.calculateScore(this.responseText);
-        this.formattedResponse = this.formatResponse(this.responseText);
-        console.log('Score after calculation:', this.score);
-        console.log('Formatted response:', this.formattedResponse);
-      } else {
-        console.warn('Empty response text received');
+        const processedText = this.preprocessResponse(this.responseText);
+        this.calculateScore(processedText);
+        this.generateDetailedFeedback();
+        this.formattedResponse = this.formatResponse(processedText);
       }
     });
   }
 
-  calculateScore(response: string): void {
-    console.log('--- calculateScore() called ---');
-    console.log('Original response:', response);
-    this.score = 0;
+  private preprocessResponse(response: string): string {
+    return response
+      .toLowerCase()
+      .replace(/\s{2,}/g, ' ')
+      .replace(/\n/g, ' ')
+      .trim();
+  }
 
-    // Loop through the grading criteria and check for matches using improved patterns
+  calculateScore(processedResponse: string): void {
+    // Base score to make 50% easier to achieve
+    const baseScore = 30;
+    let keywordMatches = 0;
+    const totalKeywords = this.gradingCriteria.reduce((sum, criteria) => sum + criteria.patterns.length, 0);
+
+    // Count all keyword matches
     this.gradingCriteria.forEach(criteria => {
-      const testResult = criteria.pattern.test(response);
-      console.log(`Testing criteria ${criteria.name}:`);
-      console.log(`Pattern: ${criteria.pattern}`);
-      console.log(`Test result: ${testResult}`);
-      
-      criteria.matched = testResult;
-      if (criteria.matched) {
-        this.score += criteria.weight;
-        console.log(`✅ Matched! Adding ${criteria.weight}% (New score: ${this.score}%)`);
-      } else {
-        console.log(`❌ No match for ${criteria.name}`);
-      }
+      criteria.patterns.forEach((pattern: RegExp) => {
+        if (pattern.test(processedResponse)) {
+          keywordMatches++;
+        }
+      });
     });
 
-    // Dynamic color based on score
-    this.scoreColor = this.score >= 80 ? '#4CAF50' : this.score >= 50 ? '#FFC107' : '#F44336';
-    console.log('Final score:', this.score);
-    console.log('Score color:', this.scoreColor);
-    console.log('--- calculateScore() complete ---');
+    // More generous keyword percentage
+    const keywordPercentage = (keywordMatches / totalKeywords) * 50;
+
+    // Criteria matching with lower threshold
+    let criteriaMatches = 0;
+    this.gradingCriteria.forEach(criteria => {
+      criteria.matched = criteria.patterns.some((pattern: RegExp) => pattern.test(processedResponse));
+      if (criteria.matched) criteriaMatches++;
+    });
+
+    // More generous criteria weighting
+    const criteriaPercentage = (criteriaMatches / this.gradingCriteria.length) * 20;
+
+    // Combined score calculation
+    this.score = Math.floor(Math.min(baseScore + keywordPercentage + criteriaPercentage, this.maxScore));
+    this.setScoreColor();
+  }
+
+  private setScoreColor(): void {
+    // Adjusted thresholds for colors
+    if (this.score >= 50) {
+      this.scoreColor = '#4CAF50'; // Green for 50+
+    } else if (this.score >= 30) {
+      this.scoreColor = '#FFC107'; // Yellow for 30-49
+    } else {
+      this.scoreColor = '#F44336'; // Red below 30
+    }
+  }
+
+  private generateDetailedFeedback(): void {
+    this.gradingCriteria.forEach(criteria => {
+      const feedback = criteria.matched ? criteria.feedback.positive : criteria.feedback.negative;
+      this.detailedFeedback.push(`${criteria.name}: ${feedback}`);
+    });
+
+    // More generous feedback messages
+    if (this.score >= 50) {
+      this.detailedFeedback.push('Overall: Good response that covers basic requirements');
+    } else if (this.score >= 30) {
+      this.detailedFeedback.push('Overall: Acceptable response with some relevant points');
+    } else {
+      this.detailedFeedback.push('Overall: Response needs more detail about the flowchart');
+    }
   }
 
   formatResponse(response: string): SafeHtml {
-    console.log('formatResponse() called');
     let formatted = response;
 
-    // Highlight matched criteria in the response text
     this.gradingCriteria.forEach(criteria => {
-      if (criteria.matched) {
-        console.log(`Highlighting matched criteria: ${criteria.name}`);
-        formatted = formatted.replace(criteria.pattern, match => {
-          console.log(`Replacing match: ${match}`);
-          return `<span class="criteria-match">${match}</span>`;
+      criteria.patterns.forEach((pattern: RegExp) => {
+        formatted = formatted.replace(new RegExp(pattern.source, 'gi'), match => {
+          return `<span class="keyword-match" title="Relevant term">${match}</span>`;
         });
-      }
+      });
     });
 
-    // Basic formatting (optional): Convert line breaks to <br/>
-    formatted = formatted.replace(/\n/g, '<br/>');
+    formatted = formatted
+      .replace(/\n/g, '<br/>')
+      .replace(/\b(start|end|node|edge|decision|process|label)\b/gi, '<strong>$1</strong>');
 
-    // Additional formatting for robustness
-    formatted = formatted.replace(/(?:\s*\n\s*)+/g, ' ').trim(); // Remove excess whitespace and newlines
-    console.log('Formatted response before sanitizing:', formatted);
+    return this.sanitizer.bypassSecurityTrustHtml(formatted);
+  }
 
-    const sanitized = this.sanitizer.bypassSecurityTrustHtml(formatted);
-    console.log('Sanitized response:', sanitized);
-    return sanitized;
+  toggleDetails(): void {
+    this.showDetails = !this.showDetails;
   }
 }
