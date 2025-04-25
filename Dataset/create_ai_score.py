@@ -5,68 +5,73 @@ import json
 
 # GLOBAL CONFIGURATIONS
 MODEL_NAME = 'gemma3:4b'
-START_INDEX = 0  # Update this if needed
-END_INDEX = None  # None will go till the end of the DataFrame
+GRADING_PROMPT = '''You are an AI vision reasoning model. You will receive an image of a flowchart and the scope of the question it is meant to answer. Your task is to analyze the flowchart and, using the following rules, determine whether each rule is satisfied (True) or violated (False). Return your results as a JSON object, where each key is the rule_id and the value is True (rule satisfied) or False (rule violated).
 
-# Updated GRADING_PROMPT with specific PT_1 to PT_4 questions
-GRADING_PROMPT = '''
-You are an expert flowchart evaluator. You will be given:
-  - An image of a flowchart.
+        Rules:
 
-Your tasks, in order:
+        1. All variables used in the flowchart/diagram must be properly initialized before use.
+        2. The algorithm should match the expected scope and complexity of the question.
+        3. The submitted image or diagram must be clear and legible.
+        4. If the diagram is too complex, contains multiple diagrams, or is ambiguous, flag for human review.
+        5. The flowchart must include an end node (terminator).
+        6. All decision nodes must be clearly labeled with 'Yes/No' or appropriate conditions.
+        7. Loops in the flowchart must be represented with correct loop arrows.
+        8. The correct type of box/shape must be used for each node (e.g., rectangles for processes, diamonds for decisions).
+        9. Every node must be properly enclosed within its designated box/shape.
 
-1. Node Classification
-   - List every node (by ID or label), classify it as Start, End, Process, or Decision.
-   - For each classification, briefly explain your reasoning.
+        Instructions:
 
-2. Structural & Practical Checks
-   For each of the following checks:
-   a) Describe how you verify it against the flowchart.
-   b) State the result (True or False).
+        - Carefully analyze the provided flowchart image and the question scope.
+        - For each rule, reason whether the flowchart satisfies the rule (True) or violates it (False).
+        - Return your answer as a JSON object in the following format:
 
-   ### Structural Logic Checks
-   - LT_1: Exactly one start node and one end node
-   - LT_2: All decision nodes contain clear, meaningful conditions
-   - LT_3: All nodes are connected; no isolated nodes
-   - LT_4: Node IDs are unique and in ascending order
-   - LT_5: At least one valid path from start to end exists
-   - LT_6: All node types are valid (Start, End, Process, Decision)
-   - LT_7: If loops exist, each has a proper termination condition (default to True if no loops exist)
-   - LT_8: All nodes have clear, meaningful labels
-   - LT_9: Each decision node has exactly two outgoing edges (e.g., Yes/No)
+        ```json
+        {
+        "rule_1": true,
+        "rule_2": false,
+        "rule_3": true,
+        "rule_4": true,
+        "rule_5": true,
+        "rule_6": false,
+        "rule_7": true,
+        "rule_8": true,
+        "rule_9": true
+        }
+        ```
 
-   ### Practical Reasoning Checks
-   - PT_1: Does the flowchart correctly handle sorting an array of integers in ascending order?
-   - PT_2: Does the flowchart correctly handle finding the maximum value in an array of integers?
-   - PT_3: Does the flowchart correctly handle reversing a string input?
-   - PT_4: Does the flowchart correctly handle calculating the factorial of a given number?
+        Input:
 
-3. Scoring
-   - Assign 1 point for each True, 0 for each False (13 checks total).
-   - Normalize the sum to a score out of 10.
-   - Show your calculation.
+        - `flowchart_image`: [Attach or link to the image]
+        - `question_scope`: [Insert the scope of the question]
 
-4. Final Output
-   - Output the results as a JSON object with the following structure:
-     {
-       "checks": {
-         "LT_1": true/false,
-         "LT_2": true/false,
-         ...
-         "PT_4": true/false
-       },
-       "practical_questions": {
-         "PT_1": {"question": "...", "reasoning": "..."},
-         "PT_2": {"question": "...", "reasoning": "..."},
-         ...
-       },
-       "total_score": x/10
-     }
+        Output:
 
-IMPORTANT: 
-- Think step by step; do not skip your chain of thought.
-- After your reasoning, **do not** include any extra commentary—just the JSON result.
-'''
+        - A JSON object with each `rule_id` as the key and a boolean value indicating if the rule is satisfied.
+
+        ---
+
+        **Example Input:**
+
+        - flowchart_image: [image.png]
+        - question_scope: "Design a flowchart to calculate the factorial of a number."
+
+        **Example Output:**
+
+        ```json
+        {
+        "rule_1": true,
+        "rule_2": true,
+        "rule_3": true,
+        "rule_4": true,
+        "rule_5": true,
+        "rule_6": true,
+        "rule_7": true,
+        "rule_8": true,
+        "rule_9": true
+        }
+        '''
+
+
 
 def ollama_func(question, image_path):
     response = ollama.chat(
@@ -88,81 +93,27 @@ def ollama_func(question, image_path):
         raise ValueError("LLM returned an empty response. Please check the input or LLM configuration.")
 
     # Parse the JSON response using ```json and ``` delimiters
-    try:
-        json_start = content.find("```json") + len("```json")
-        json_end = content.rfind("```")
-        json_content = content[json_start:json_end].strip()
-        result = json.loads(json_content)
-    except json.JSONDecodeError as e:
-        # Log the raw content for debugging purposes
-        print("Failed to parse JSON response. Raw content:", content)
-        raise ValueError("Failed to parse JSON response from LLM") from e
+    response_text = content
+    match = re.search(r'json\s*(\{.*?\})\s*', response_text, re.DOTALL) 
+    if match: 
+        json_str = match.group(1) 
+        parsed_json = json.loads(json_str) 
+        print(parsed_json) 
+    else: 
+        print("No JSON block found.")
+    
 
-    # Flatten the JSON structure for DataFrame compatibility
-    checks = result.get('checks', {})
-    practical_questions = result.get('practical_questions', {})
-
-    flattened_result = {**checks}
-    for i in range(1, 5):
-        pt_key = f'PT_{i}'
-        flattened_result[f'p{i}_question'] = practical_questions.get(pt_key, {}).get('question', None)
-        flattened_result[f'p{i}_reasoning'] = practical_questions.get(pt_key, {}).get('reasoning', None)
-
-    flattened_result['ai_grade'] = result.get('total_score', None)
-
-    return flattened_result
+    return parsed_json
 
 # Load CSV and select range
-df = pd.read_csv('grade.csv').head(1)
+df = pd.read_csv('grade.csv').head(2)
 
-if END_INDEX is None:
-    END_INDEX = len(df)
 
-# Apply function and expand results into multiple columns
-result_df = df.iloc[START_INDEX:END_INDEX].copy()
-expanded_results = result_df.apply(lambda row: ollama_func(row['question'], row['image']), axis=1)
+expanded_results = df.apply(lambda row: ollama_func(row['question'], row['image_path']), axis=1)
 
-# Assign each check result to individual columns, with None if the check is not available
-result_df['LT_1'] = expanded_results.apply(lambda x: x.get('LT_1', None))
-result_df['LT_2'] = expanded_results.apply(lambda x: x.get('LT_2', None))
-result_df['LT_3'] = expanded_results.apply(lambda x: x.get('LT_3', None))
-result_df['LT_4'] = expanded_results.apply(lambda x: x.get('LT_4', None))
-result_df['LT_5'] = expanded_results.apply(lambda x: x.get('LT_5', None))
-result_df['LT_6'] = expanded_results.apply(lambda x: x.get('LT_6', None))
-result_df['LT_7'] = expanded_results.apply(lambda x: x.get('LT_7', None))
-result_df['LT_8'] = expanded_results.apply(lambda x: x.get('LT_8', None))
-result_df['LT_9'] = expanded_results.apply(lambda x: x.get('LT_9', None))
-result_df['PT_1'] = expanded_results.apply(lambda x: x.get('PT_1', None))
-result_df['PT_2'] = expanded_results.apply(lambda x: x.get('PT_2', None))
-result_df['PT_3'] = expanded_results.apply(lambda x: x.get('PT_3', None))
-result_df['PT_4'] = expanded_results.apply(lambda x: x.get('PT_4', None))
+result_df = pd.DataFrame(list(expanded_results))
 
-# Add practical questions and reasoning columns
-for i in range(1, 5):
-    result_df[f'p{i}_question'] = expanded_results.apply(lambda x: x.get(f'p{i}_question', None))
-    result_df[f'p{i}_reasoning'] = expanded_results.apply(lambda x: x.get(f'p{i}_reasoning', None))
-
-cols = ['LT_1','LT_2','LT_3','LT_4','LT_5','LT_6','LT_7','LT_8','LT_9',
-        'PT_1','PT_2','PT_3','PT_4']
-
-# Replace None with False, then cast True→1, False→0
-for c in cols:
-    # 1) cast to pandas nullable Boolean
-    # 2) fill missing with False (or True if that’s what you intended)
-    # 3) cast to plain Python int
-    result_df[c] = (
-        result_df[c]
-          .astype('boolean')     # nullable bool dtype → no downcast warning
-          .fillna(False)         # or .fillna(True) per your logic
-          .astype(int)           # now safe to cast to 0/1 ints
-    )
-# Raw total = sum of the 13 indicator columns
-result_df['total_score_raw'] = result_df[cols].sum(axis=1)
-
-# Normalize to 10-point scale: (raw / 13) * 10
-result_df['ai_grade'] = round(result_df['total_score_raw'] * 10.0 / len(cols), 0)
-
-result_df['model_name'] = MODEL_NAME
+df = pd.concat([df, result_df], axis=1)
 
 # Save to a new CSV file
-result_df.to_csv("ai_grade.csv", index=False)
+df.to_csv("ai_grade.csv", index=False)

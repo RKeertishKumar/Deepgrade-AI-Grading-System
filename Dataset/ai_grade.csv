@@ -1,2 +1,3 @@
-id,question,image,human_grade,LT_1,LT_2,LT_3,LT_4,LT_5,LT_6,LT_7,LT_8,LT_9,PT_1,PT_2,PT_3,PT_4,total_score_raw,ai_grade,model_name
-1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,9,1,1,1,1,1,1,1,1,1,0,0,0,0,9,6.9,gemma3:4b
+image_id,question,image_path,rule_1,rule_2,rule_3,rule_4,rule_5,rule_6,rule_7,rule_8,rule_9
+1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,True,True,True,True,True,True,True,True,True
+2,Draw a flowchart to illustrate the process of inserting (pushing) an element into a stack. Clearly handle the overflow condition.,2.jpg,True,True,True,True,True,True,True,True,True
