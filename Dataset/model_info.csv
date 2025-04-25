@@ -1,3 +1,3 @@
 model_id,model_name,model_parametes,model_description
 1,llama3.2-vision,11B,Llama 3.2 Vision is a collection of instruction-tuned image reasoning generative models in 11B and 90B sizes.
-2,taozhiyuai/llama-3-refueled:q4_k_m,8B,a Llama3-8B base model instruction tuned on a corpus of 2750+ datasets, spanning tasks such as classification, reading comprehension, structured attribute extraction and entity resolution
+2,taozhiyuai/llama-3-refueled:q4_k_m,8B,"a Llama3-8B base model instruction tuned on a corpus of 2750+ datasets, spanning tasks such as classification, reading comprehension, structured attribute extraction and entity resolution"

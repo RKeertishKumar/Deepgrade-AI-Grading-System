@@ -1,0 +1,2 @@
+id,question,image,human_grade,LT_1,LT_2,LT_3,LT_4,LT_5,LT_6,LT_7,LT_8,LT_9,PT_1,PT_2,PT_3,PT_4,ai_grade
+1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,9,True,True,True,True,True,True,False,True,False,True,True,True,True,10.0

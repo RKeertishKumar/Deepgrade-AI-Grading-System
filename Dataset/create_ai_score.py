@@ -3,66 +3,71 @@ import pandas as pd
 import re
 
 # GLOBAL CONFIGURATIONS
-MODEL_NAME = 'llama3.2-vision:11b-instruct-q4_K_M'
+MODEL_NAME = 'gemma3:4b'
 START_INDEX = 0  # Update this if needed
-END_INDEX = 2  # None will go till the end of the DataFrame
+END_INDEX = None  # None will go till the end of the DataFrame
 
 # UPDATED PROMPT TO CLASSIFY NODE TYPES
-GRADING_PROMPT = ''' 
-You are an expert flowchart evaluator. 
-You will be given: 
-- An image of a flowchart.  
-Your task is to:
-1. Classify all nodes as one of the following types: Start, End, Process, Decision.  
-2. Run a series of structural and practical checks listed below.  
-3. Output a True or False for each check.  
-4. Normalize the total score out of 10.  
-5. Return your results in a structured plain text format.  
----
-### Structural Logic Checks (True/False)
-- LT_1: Exactly one start node and one end node
-- LT_2: All decision nodes contain clear, meaningful conditions
-- LT_3: All nodes are connected; no isolated nodes
-- LT_4: Node IDs are unique and in ascending order
-- LT_5: At least one valid path from start to end exists
-- LT_6: All node types are valid (Start, End, Process, Decision)
-- LT_7: If loops exist, each has a proper termination condition
-- LT_8: All nodes have clear, meaningful labels
-- LT_9: Each decision node has exactly two outgoing edges (e.g., Yes/No)
+GRADING_PROMPT = '''
+You are an expert flowchart evaluator. You will be given:
+  - An image of a flowchart.
 
-### Practical Reasoning Checks (True/False)
-- PT_1: The flowchart works for a basic test case
-- PT_2: The flowchart works for a second, different test case
+Your tasks, in order:
 
-### Additional Checks (True/False)
-- PT_3: It handles an edge/boundary case well
-- PT_4: It is logically efficient (solves the problem with minimal necessary steps)
+1. Node Classification
+   - List every node (by ID or label), classify it as Start, End, Process, or Decision.
+   - For each classification, briefly explain your reasoning.
 
-### Final Output Format (Plain Text) Below is just an example. Properly state True or False based on flowchart.
-LT_1: True
-LT_2: False
-LT_3: True
-LT_4: True
-LT_5: True
-LT_6: True
-LT_7: True
-LT_8: True
-LT_9: True
-PT_1: True
-PT_2: True
-PT_3: True
-PT_4: True
-TOTAL_SCORE: 8.5/10
+2. Structural & Practical Checks
+   For each of the following checks:
+   a) Describe how you verify it against the flowchart.
+   b) State the result (True or False).
+
+   ### Structural Logic Checks
+   - LT_1: Exactly one start node and one end node
+   - LT_2: All decision nodes contain clear, meaningful conditions
+   - LT_3: All nodes are connected; no isolated nodes
+   - LT_4: Node IDs are unique and in ascending order
+   - LT_5: At least one valid path from start to end exists
+   - LT_6: All node types are valid (Start, End, Process, Decision)
+   - LT_7: If loops exist, each has a proper termination condition
+   - LT_8: All nodes have clear, meaningful labels
+   - LT_9: Each decision node has exactly two outgoing edges (e.g., Yes/No)
+
+   ### Practical Reasoning Checks
+   - PT_1: The flowchart works for a basic test case
+   - PT_2: The flowchart works for a second, different test case
+
+   ### Additional Checks
+   - PT_3: It handles an edge/boundary case well
+   - PT_4: It is logically efficient (solves the problem with minimal steps)
+
+3. Scoring
+   - Assign 1 point for each True, 0 for each False (13 checks total).
+   - Normalize the sum to a score out of 10.
+   - Show your calculation.
+
+4. Final Output
+   - First, show a concise “Reasoning” section (your step-by-step).
+   - Then, output **ONLY** the following lines in plain text:
+     LT_1: True/False
+     LT_2: True/False
+     …
+     PT_4: True/False
+     TOTAL_SCORE: x/10
+
+IMPORTANT: 
+- Think step by step; do not skip your chain of thought.
+- Show how you arrived at each True/False.
+- After your reasoning, **do not** include any extra commentary—just the result block.
 '''
+
 
 def ollama_func(question, image_path):
     response = ollama.chat(
         model=MODEL_NAME,
-        options={
-            "num_gpu":0
-        },
         messages=[{
-            'role': 'tool',
+            'role': 'user',
             'content': GRADING_PROMPT + f"\nNow evaluate the following flowchart:\n{question}",
             'images': [image_path]
         }]
@@ -81,7 +86,7 @@ def ollama_func(question, image_path):
     return result
 
 # Load CSV and select range
-df = pd.read_csv('grade.csv')
+df = pd.read_csv('grade.csv').head(1)
 
 if END_INDEX is None:
     END_INDEX = len(df)
@@ -105,5 +110,7 @@ result_df['PT_2'] = expanded_results.apply(lambda x: x.get('PT_2', None))
 result_df['PT_3'] = expanded_results.apply(lambda x: x.get('PT_3', None))
 result_df['PT_4'] = expanded_results.apply(lambda x: x.get('PT_4', None))
 
+result_df['ai_grade'] = expanded_results.apply(lambda x: x.get('ai_grade', None))
+
 # Save to a new CSV file
-result_df.to_csv("ai_grade.csv")
+result_df.to_csv("ai_grade.csv", index=False)
