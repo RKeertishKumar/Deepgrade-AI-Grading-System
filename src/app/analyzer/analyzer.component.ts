@@ -15,6 +15,7 @@ export class AnalyzerComponent {
   imageUrl: string | null = null;
   errorMessage: string | null = null;
   userQuestion: string = ''; // Add this line
+  responseChunks: string[] = []; // Array to collect chunks of the response
 
   constructor(
     private ollamaService: OllamaService,
@@ -39,12 +40,14 @@ export class AnalyzerComponent {
     this.fileSelected = null;
     this.imageUrl = null;
     this.responseText = '';
+    this.responseChunks = []; // Reset response chunks when image is removed
   }
 
   analyzeImage() {
     if (this.fileSelected) {
       this.loading = true;
       this.responseText = '';
+      this.responseChunks = []; // Reset the chunks on new analysis
       this.ngxService.start();
 
       const reader = new FileReader();
@@ -70,27 +73,31 @@ export class AnalyzerComponent {
 
     try {
       console.log('Raw Response:', responseText);
-      const jsonObjects = responseText.split('\n').filter(line => line.trim() !== '');
-      let finalResponse = '';
 
+      // Split response by lines (or other delimiters) to handle each chunk
+      const jsonObjects = responseText.split('\n').filter(line => line.trim() !== '');
       for (const jsonString of jsonObjects) {
         try {
           const jsonResponse = JSON.parse(jsonString);
           if (jsonResponse.message && jsonResponse.message.content) {
-            finalResponse += jsonResponse.message.content;
+            // Collect each chunk of content in the responseChunks array
+            this.responseChunks.push(jsonResponse.message.content);
           }
         } catch (error) {
           console.error('Error parsing JSON chunk:', error);
         }
       }
 
-      this.responseText = finalResponse;
-      console.log('Final Response:', finalResponse);
-      console.log('Navigating to /response-page...');
+      // Combine all chunks into the final response
+      this.responseText = this.responseChunks.join('');
+      console.log('Final Combined Response:', this.responseText);
 
+      // Navigate to the response page with the full response
+      console.log('Navigating to /response-page...');
       this.router.navigate(['/response-page'], { 
-        queryParams: { response: finalResponse } 
+        queryParams: { response: this.responseText } 
       });
+
     } catch (error) {
       console.error('Error processing API response:', error);
       this.responseText = 'Error processing API response!';

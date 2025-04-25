@@ -15,119 +15,97 @@ export class ResponsePageComponent implements OnInit {
   maxScore: number = 100;
   scoreColor: string = '#7054FF';
 
+  // Enhanced grading criteria with more flexible regex
   gradingCriteria: any[] = [
-    { 
-      name: 'S1: Start-End Node Check', 
-      pattern: /(start.*node|end.*node|Start Terminator|End Terminator)/i, 
-      weight: 20,
-      matched: false
-    },
-    { 
-      name: 'S2: Unique Sequential Node IDs Check', 
-      pattern: /(unique.*id|sequential.*id|node.*identifier)/i, 
-      weight: 15,
-      matched: false
-    },
-    { 
-      name: 'S3: Valid Node Types Check', 
-      pattern: /(valid.*node.*type|start|end|process|decision)/i, 
-      weight: 15,
-      matched: false
-    },
-    { 
-      name: 'S4: Connected Nodes Check', 
-      pattern: /(connected.*nodes|no.*isolated.*node)/i, 
-      weight: 15,
-      matched: false
-    },
-    { 
-      name: 'S5: Decision Node Outgoing Edges Check', 
-      pattern: /(decision.*node.*two.*outgoing|yes.*no)/i, 
-      weight: 10,
-      matched: false
-    },
-    { 
-      name: 'S6: Clear Labels Check', 
-      pattern: /(clear.*label|meaningful.*label)/i, 
-      weight: 10,
-      matched: false
-    },
-    { 
-      name: 'S7: Complete Path from Start to End Check', 
-      pattern: /(complete.*path.*start.*end|reachable.*end)/i, 
-      weight: 15,
-      matched: false
-    }
+    { name: 'S1: Start-End Node Check', pattern: /(?:start|beginning).*?(?:end|finish)/i, weight: 20, matched: false },
+    { name: 'S2: Unique Sequential Node IDs Check', pattern: /(?:unique|sequential).*?\d+\/\d+/i, weight: 15, matched: false },
+    { name: 'S3: Valid Node Types Check', pattern: /(?:start|end|process|decision|action|operation|valid.*type)/i, weight: 15, matched: false },
+    { name: 'S4: Connected Nodes Check', pattern: /(?:connected|isolated|linked|disconnected)/i, weight: 15, matched: false },
+    { name: 'S5: Decision Node Outgoing Edges Check', pattern: /(?:yes|no).*?outgoing/i, weight: 10, matched: false },
+    { name: 'S6: Clear Labels Check', pattern: /(?:clear|meaningful|descriptive).*?label/i, weight: 10, matched: false },
+    { name: 'S7: Complete Path from Start to End Check', pattern: /(?:path|sequence).*?(start.*?end|complete.*?path)/i, weight: 15, matched: false }
   ];
 
   constructor(
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private gradingService: GradingService
-  ) {}
+  ) {
+    console.log('Component initialized - constructor');
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    console.log('ngOnInit triggered');
+    
     this.route.queryParams.subscribe(params => {
-      this.responseText = params['response'];
-      this.gradingService.gradeResponse(this.responseText).subscribe({
-        next: (result) => {
-          this.score = result.score;
-          this.maxScore = result.max_score;
-          this.scoreColor = result.score_color;
-          this.formattedResponse = this.sanitizer.bypassSecurityTrustHtml(result.formatted_response);
-          
-          // Update criteria matches
-          this.gradingCriteria.forEach(criteria => {
-            criteria.matched = result.matched_criteria.includes(criteria.name);
-          });
-        },
-        error: (err) => {
-          console.error('Error grading response:', err);
-          this.formattedResponse = this.formatResponse(this.responseText);
-          this.calculateScore(this.responseText);
-        }
-      });
+      console.log('Query params received:', params);
+      this.responseText = params['response'] || '';
+      console.log('Response text set:', this.responseText);
+
+      if (this.responseText.trim() !== '') {
+        console.log('Processing response text...');
+        this.calculateScore(this.responseText);
+        this.formattedResponse = this.formatResponse(this.responseText);
+        console.log('Score after calculation:', this.score);
+        console.log('Formatted response:', this.formattedResponse);
+      } else {
+        console.warn('Empty response text received');
+      }
     });
   }
 
-  calculateScore(response: string) {
+  calculateScore(response: string): void {
+    console.log('--- calculateScore() called ---');
+    console.log('Original response:', response);
     this.score = 0;
-    
+
+    // Loop through the grading criteria and check for matches using improved patterns
     this.gradingCriteria.forEach(criteria => {
-      criteria.matched = criteria.pattern.test(response);
+      const testResult = criteria.pattern.test(response);
+      console.log(`Testing criteria ${criteria.name}:`);
+      console.log(`Pattern: ${criteria.pattern}`);
+      console.log(`Test result: ${testResult}`);
+      
+      criteria.matched = testResult;
       if (criteria.matched) {
         this.score += criteria.weight;
+        console.log(`✅ Matched! Adding ${criteria.weight}% (New score: ${this.score}%)`);
+      } else {
+        console.log(`❌ No match for ${criteria.name}`);
       }
     });
 
-    if (this.score >= 80) {
-      this.scoreColor = '#4CAF50'; // Green
-    } else if (this.score >= 50) {
-      this.scoreColor = '#FFC107'; // Yellow
-    } else {
-      this.scoreColor = '#F44336'; // Red
-    }
+    // Dynamic color based on score
+    this.scoreColor = this.score >= 80 ? '#4CAF50' : this.score >= 50 ? '#FFC107' : '#F44336';
+    console.log('Final score:', this.score);
+    console.log('Score color:', this.scoreColor);
+    console.log('--- calculateScore() complete ---');
   }
 
   formatResponse(response: string): SafeHtml {
-    let formattedText = response;
+    console.log('formatResponse() called');
+    let formatted = response;
 
-    formattedText = formattedText.replace(/\*\s*(.*?)\n/g, '<li>$1</li>');
-    formattedText = `<ul>${formattedText}</ul>`;
-
-    const highlightPhrases = ['Read:', 'If', 'Result =', 'Beg =', 'End =', 'Mid ='];
-    highlightPhrases.forEach(phrase => {
-      formattedText = formattedText.replace(new RegExp(phrase, 'g'), `<strong>${phrase}</strong>`);
-    });
-
+    // Highlight matched criteria in the response text
     this.gradingCriteria.forEach(criteria => {
       if (criteria.matched) {
-        formattedText = formattedText.replace(criteria.pattern, match => 
-          `<span class="criteria-match">${match}</span>`
-        );
+        console.log(`Highlighting matched criteria: ${criteria.name}`);
+        formatted = formatted.replace(criteria.pattern, match => {
+          console.log(`Replacing match: ${match}`);
+          return `<span class="criteria-match">${match}</span>`;
+        });
       }
     });
 
-    return this.sanitizer.bypassSecurityTrustHtml(formattedText);
+    // Basic formatting (optional): Convert line breaks to <br/>
+    formatted = formatted.replace(/\n/g, '<br/>');
+
+    // Additional formatting for robustness
+    formatted = formatted.replace(/(?:\s*\n\s*)+/g, ' ').trim(); // Remove excess whitespace and newlines
+    console.log('Formatted response before sanitizing:', formatted);
+
+    const sanitized = this.sanitizer.bypassSecurityTrustHtml(formatted);
+    console.log('Sanitized response:', sanitized);
+    return sanitized;
   }
 }

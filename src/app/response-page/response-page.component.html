@@ -1,13 +1,13 @@
 <div class="common-container">
   <div class="head">
-    <h1>DeepGrade</h1>
+    <h5>DeepGrade</h5>
   </div>
 
   <div class="content-row">
     <!-- Score Display Section -->
     <div class="score-column">
       <div class="score-container">
-        <h2 class="score-label">Accuracy Score</h2>
+        <h6 class="score-label">Accuracy Score</h6>
         <div class="score-display" 
              [style.--score-color]="scoreColor" 
              [style.--score-percent]="(score/maxScore)*360 + 'deg'">
@@ -17,7 +17,7 @@
 
       <!-- Grading Criteria Breakdown -->
       <div class="criteria-list">
-        <h3>Grading Criteria</h3>
+        <h6>Grading Criteria</h6>
         <div *ngFor="let criteria of gradingCriteria" 
              class="criteria-item" 
              [class.matched]="criteria.matched">
@@ -30,7 +30,7 @@
     <!-- Main Response Container -->
     <div class="response-column">
       <div class="response-container">
-        <h2>Analysis Response</h2>
+        <h6>Analysis Response</h6>
         <div class="response-content">
           <div [innerHTML]="formattedResponse"></div>
         </div>
