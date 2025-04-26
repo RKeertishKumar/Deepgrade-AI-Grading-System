@@ -2,7 +2,7 @@ import ollama
 import pandas as pd
 import re
 
-MODEL = 'taozhiyuai/llama-3-refueled:q4_k_m'
+MODEL = 'granite3.2-vision:latest'
 
 grading_prompt = '''
 You are an expert flowchart evaluator and classifier.
@@ -51,7 +51,7 @@ def ollama_func(question, image_path):
     return question_intent, difficulty_level, evaluation_type
 
 # Load CSV
-df = pd.read_csv('grade.csv')
+df = pd.read_csv('grade.csv').head(1)
 
 # Apply the function and create the new columns
 df[['question_intent', 'question_difficulty_level', 'question_evaluation_type']] = df.apply(
@@ -61,6 +61,8 @@ df[['question_intent', 'question_difficulty_level', 'question_evaluation_type']]
 
 # Add model name used for classification
 df['question_classification_model'] = MODEL
+
+df = df[['id','question','question_intent', 'question_difficulty_level','question_evaluation_type']]
 
 # Save the updated DataFrame
 df.to_csv('grade_question_analysis.csv', index=False)

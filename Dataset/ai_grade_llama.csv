@@ -1,0 +1,23 @@
+image_id,question,image_path,rule_1,rule_2,rule_3,rule_4,rule_5,rule_6,rule_7,rule_8,rule_9,model_name
+1,Draw a flowchart to represent the logic for swapping the values of two variables.,1.jpg,False,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+2,Draw a flowchart to illustrate the process of inserting (pushing) an element into a stack. Clearly handle the overflow condition.,2.jpg,True,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+3,Draw a flowchart to calculate a child's allowance based on their age. Use different rates depending on whether the age is below or above 10.,3.jpg,True,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+4,Draw a flowchart to check if a person's age is 21 and print the appropriate message.,4.jpg,False,True,True,True,True,False,True,True,True,llama3.2-vision:latest
+5,Draw a flowchart to compare two numbers A and B and print the greater value.,5.jpg,True,False,True,True,True,False,True,True,True,llama3.2-vision:latest
+6,Draw a flowchart to solve a quadratic equation using the discriminant method and output the roots accordingly.,6.jpg,True,False,True,True,True,True,True,True,True,llama3.2-vision:latest
+7,Draw a flowchart to traverse and process each element of an array A from a specified lower bound to upper bound using a loop structure.,7.jpg,True,True,True,True,True,False,True,True,True,llama3.2-vision:latest
+8,Draw a flowchart to illustrate the steps involved in buying a book from an online store.,8.jpg,True,False,True,True,True,True,True,True,True,llama3.2-vision:latest
+9,"Draw a flowchart to determine how different creatures should handle their waste in the wild. Include humorous decision points for humans, animals, and hikers.",9.jpg,True,False,True,True,True,False,True,True,True,llama3.2-vision:latest
+10,Draw a flowchart to perform two sequential steps followed by a decision. Loop back to the start if the condition is not met.,10.jpg,True,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+11,Draw a flowchart to show the steps involved in making a cup of tea.,11.jpg,False,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+12,Draw a flowchart to show the steps involved in making a cheese Cake.,12.jpg,True,False,True,True,True,False,True,True,True,llama3.2-vision:latest
+13,Draw a flowchart to show the steps involved in making a cup of tea.,13.jpg,True,False,True,True,True,True,True,True,True,llama3.2-vision:latest
+14,Draw a flowchart to reverse a given number.,14.jpg,True,True,True,False,True,False,True,True,True,llama3.2-vision:latest
+15,Draw a flowchart to calculate the sum of digits of a given number.,15.jpg,True,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+16,Draw a flowchart to compute the factorial of a given number n.,16.jpg,True,False,True,True,True,False,True,True,True,llama3.2-vision:latest
+17,Draw a flowchart to check whether a given number is even or odd.,17.jpg,True,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+18,Draw a flowchart to print the first n terms of the Fibonacci sequence.,18.jpg,False,True,True,True,True,False,True,True,True,llama3.2-vision:latest
+19,"Draw a flowchart to read three numbers a, b, and c, and print the largest among them.",19.jpg,True,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+20,Draw a flowchart to print the multiplication table of a given number n up to 10.,20.jpg,True,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+21,"Draw a flowchart to calculate simple interest given principal P, rate R, and time T.",21.jpg,False,True,True,True,True,True,True,True,True,llama3.2-vision:latest
+22,Draw a flowchart to check whether a number n is a prime number or not.,22.jpg,True,True,True,True,True,False,True,True,True,llama3.2-vision:latest
